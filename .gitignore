@@ -1,0 +1,62 @@
+# Maven & Build artifacts
+**/target/
+**/build/
+**/out/
+*.jar
+*.war
+*.ear
+
+# Maven wrapper
+**/.mvn/wrapper/maven-wrapper.jar
+
+# IDE - VS Code
+.vscode/
+*.code-workspace
+
+# IDE - IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# IDE - NetBeans
+**/nbproject/private/
+**/nbbuild/
+**/dist/
+**/nbdist/
+**/.nb-gradle/
+
+# IDE - Eclipse/STS
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+.apt_generated
+
+# System files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs/
+*.log
+
+# Node (si hay frontend)
+node_modules/
+npm-debug.log
+
+# OS
+*.class
+.classpath
+.factorypath

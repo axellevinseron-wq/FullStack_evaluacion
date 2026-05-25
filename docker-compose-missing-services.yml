@@ -1,0 +1,167 @@
+  ms-usuarios:
+    image: openjdk:17-jdk-slim
+    container_name: ecomarket_ms_usuarios
+    working_dir: /app
+    volumes:
+      - ./ms-usuarios/target/ms-usuarios-1.0.0.jar:/app/app.jar
+    ports:
+      - "8001:8080"
+    environment:
+      SPRING_APPLICATION_NAME: ms-usuarios
+      SPRING_DATASOURCE_URL: jdbc:mysql://ecomarket_mysql_db:3306/ms_usuarios?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
+      SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "true"
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQL8Dialect
+      SPRING_FLYWAY_ENABLED: "true"
+      SPRING_FLYWAY_LOCATIONS: classpath:db/migration
+      SPRING_FLYWAY_BASELINE_ON_MIGRATE: "true"
+    command: java -jar app.jar
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - ecomarket-network
+
+  ms-pagos:
+    image: openjdk:17-jdk-slim
+    container_name: ecomarket_ms_pagos
+    working_dir: /app
+    volumes:
+      - ./ms-pagos/target/ms-pagos-1.0.0.jar:/app/app.jar
+    ports:
+      - "8002:8080"
+    environment:
+      SPRING_APPLICATION_NAME: ms-pagos
+      SPRING_DATASOURCE_URL: jdbc:mysql://ecomarket_mysql_db:3306/ms_pagos?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
+      SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "true"
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQL8Dialect
+      SPRING_FLYWAY_ENABLED: "true"
+      SPRING_FLYWAY_LOCATIONS: classpath:db/migration
+      SPRING_FLYWAY_BASELINE_ON_MIGRATE: "true"
+    command: java -jar app.jar
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - ecomarket-network
+
+  ms-envios:
+    image: openjdk:17-jdk-slim
+    container_name: ecomarket_ms_envios
+    working_dir: /app
+    volumes:
+      - ./ms-envios/target/ms-envios-1.0.0.jar:/app/app.jar
+    ports:
+      - "8005:8080"
+    environment:
+      SPRING_APPLICATION_NAME: ms-envios
+      SPRING_DATASOURCE_URL: jdbc:mysql://ecomarket_mysql_db:3306/ms_envios?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
+      SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "true"
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQL8Dialect
+      SPRING_FLYWAY_ENABLED: "true"
+      SPRING_FLYWAY_LOCATIONS: classpath:db/migration
+      SPRING_FLYWAY_BASELINE_ON_MIGRATE: "true"
+    command: java -jar app.jar
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - ecomarket-network
+
+  ms-clientes:
+    image: openjdk:17-jdk-slim
+    container_name: ecomarket_ms_clientes
+    working_dir: /app
+    volumes:
+      - ./ms-clientes/ms-clientes/target/ms-clientes-1.0.0.jar:/app/app.jar
+    ports:
+      - "8008:8080"
+    environment:
+      SPRING_APPLICATION_NAME: ms-clientes
+      SPRING_DATASOURCE_URL: jdbc:mysql://ecomarket_mysql_db:3306/ms_clientes?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
+      SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "true"
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQL8Dialect
+      SPRING_FLYWAY_ENABLED: "true"
+      SPRING_FLYWAY_LOCATIONS: classpath:db/migration
+      SPRING_FLYWAY_BASELINE_ON_MIGRATE: "true"
+    command: java -jar app.jar
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - ecomarket-network
+
+  ms-promociones:
+    image: openjdk:17-jdk-slim
+    container_name: ecomarket_ms_promociones
+    working_dir: /app
+    volumes:
+      - ./ms-promociones/ms-promociones/target/ms-promociones-1.0.0.jar:/app/app.jar
+    ports:
+      - "8009:8080"
+    environment:
+      SPRING_APPLICATION_NAME: ms-promociones
+      SPRING_DATASOURCE_URL: jdbc:mysql://ecomarket_mysql_db:3306/ms_promociones?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
+      SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "true"
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQL8Dialect
+      SPRING_FLYWAY_ENABLED: "true"
+      SPRING_FLYWAY_LOCATIONS: classpath:db/migration
+      SPRING_FLYWAY_BASELINE_ON_MIGRATE: "true"
+    command: java -jar app.jar
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - ecomarket-network
+
+  ms-inventario:
+    image: openjdk:17-jdk-slim
+    container_name: ecomarket_ms_inventario
+    working_dir: /app
+    volumes:
+      - ./ms-inventario(3)/ms-inventario/ms-inventario/target/ms-inventario-1.0.0.jar:/app/app.jar
+    ports:
+      - "8010:8080"
+    environment:
+      SPRING_APPLICATION_NAME: ms-inventario
+      SPRING_DATASOURCE_URL: jdbc:mysql://ecomarket_mysql_db:3306/ms_inventario?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
+      SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "true"
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQL8Dialect
+      SPRING_FLYWAY_ENABLED: "true"
+      SPRING_FLYWAY_LOCATIONS: classpath:db/migration
+      SPRING_FLYWAY_BASELINE_ON_MIGRATE: "true"
+    command: java -jar app.jar
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - ecomarket-network

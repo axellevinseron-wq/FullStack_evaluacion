@@ -1,0 +1,12 @@
+-- MS-Pedidos: Crear tabla de Pedidos
+CREATE TABLE IF NOT EXISTS pedido (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    cliente_id BIGINT NOT NULL,
+    estado VARCHAR(50) NOT NULL,
+    fecha_pedido TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE INDEX idx_cliente_id ON pedido(cliente_id);
+CREATE INDEX idx_estado ON pedido(estado);
