@@ -5,7 +5,6 @@ import com.example.ms_pedidos.Exception.BusinessException;
 import com.example.ms_pedidos.Model.Pedido;
 import com.example.ms_pedidos.Repository.PedidoRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,8 +12,11 @@ import java.util.List;
 @Service
 @Slf4j
 public class PedidoService {
-    @Autowired
-    private PedidoRepository repository;
+    private final PedidoRepository repository;
+
+    public PedidoService(PedidoRepository repository) {
+        this.repository = repository;
+    }
 
     public Pedido guardar(Pedido pedido) {
         log.info("Guardando nuevo pedido para cliente: {}", pedido.getClienteId());

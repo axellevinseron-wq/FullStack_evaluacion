@@ -5,15 +5,17 @@ package com.example.ms_envios.Controller;
 import com.example.ms_envios.Model.Envio;
 import com.example.ms_envios.Service.EnvioService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/envios")
 public class EnvioController {
-    @Autowired
-    private EnvioService service;
+    private final EnvioService service;
+
+    public EnvioController(EnvioService service) {
+        this.service = service;
+    }
 
     @PostMapping
     public Envio crear(@Valid @RequestBody Envio envio) {

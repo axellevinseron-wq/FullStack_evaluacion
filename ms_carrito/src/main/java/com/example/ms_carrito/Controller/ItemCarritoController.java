@@ -5,15 +5,17 @@ package com.example.ms_carrito.Controller;
 import com.example.ms_carrito.Model.ItemCarrito;
 import com.example.ms_carrito.Service.ItemCarritoService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/carrito")
 public class ItemCarritoController {
-    @Autowired
-    private ItemCarritoService service;
+    private final ItemCarritoService service;
+
+    public ItemCarritoController(ItemCarritoService service) {
+        this.service = service;
+    }
 
     @PostMapping
     public ItemCarrito crear(@Valid @RequestBody ItemCarrito item) {

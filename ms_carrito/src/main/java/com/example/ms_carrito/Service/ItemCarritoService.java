@@ -5,17 +5,18 @@ import com.example.ms_carrito.Dto.ProductoDTO;
 import com.example.ms_carrito.Model.ItemCarrito;
 import com.example.ms_carrito.Repository.ItemCarritoRepository;
 import feign.FeignException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
 public class ItemCarritoService {
-    @Autowired
-    private ItemCarritoRepository repository;
+    private final ItemCarritoRepository repository;
+    private final ProductoFeignClient productoFeignClient;
 
-    @Autowired
-    private ProductoFeignClient productoFeignClient;
+    public ItemCarritoService(ItemCarritoRepository repository, ProductoFeignClient productoFeignClient) {
+        this.repository = repository;
+        this.productoFeignClient = productoFeignClient;
+    }
 
     public ItemCarrito guardar(ItemCarrito item) {
         try {

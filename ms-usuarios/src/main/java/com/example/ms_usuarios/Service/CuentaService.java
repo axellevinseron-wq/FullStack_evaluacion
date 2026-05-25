@@ -2,7 +2,6 @@ package com.example.ms_usuarios.Service;
 
 import com.example.ms_usuarios.Model.Cuenta;
 import com.example.ms_usuarios.Repository.CuentaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -10,8 +9,11 @@ import java.util.Optional;
 
 @Service
 public class CuentaService {
-    @Autowired
-    private CuentaRepository repository;
+    private final CuentaRepository repository;
+
+    public CuentaService(CuentaRepository repository) {
+        this.repository = repository;
+    }
 
     public Cuenta guardar(Cuenta cuenta) {
         return repository.save(cuenta);

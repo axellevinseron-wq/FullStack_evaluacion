@@ -1,9 +1,9 @@
 package com.example.ms_inventario.Controller;
 
+import com.example.ms_inventario.Dto.StockDTO;
 import com.example.ms_inventario.Model.Stock;
 import com.example.ms_inventario.Service.StockService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,8 +13,11 @@ import java.util.List;
 @RequestMapping("/api/inventario")
 public class StockController {
 
-    @Autowired
-    private StockService stockService;
+    private final StockService stockService;
+
+    public StockController(StockService stockService) {
+        this.stockService = stockService;
+    }
 
     @GetMapping
     public List<Stock> listarTodo() {
@@ -41,6 +44,11 @@ public class StockController {
     @PostMapping("/agregar")
     public ResponseEntity<Stock> agregarStock(@RequestParam Long productoId, @RequestParam Double cantidad) {
         return ResponseEntity.ok(stockService.agregarStock(productoId, cantidad));
+    }
+
+    @PostMapping("/reservar")
+    public ResponseEntity<Void> reservar(@Valid @RequestBody StockDTO stockDTO) {
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")

@@ -10,10 +10,7 @@ public class ProductoFeignClientFallback implements ProductoFeignClient {
 
     @Override
     public ProductoDTO obtenerProductoPorId(Long id) {
-        log.error("🔥 FALLBACK ACTIVADO - Servicio ms-catalogo NO DISPONIBLE. ProductoID: {}", id);
-        log.error("Reintentando en 30 segundos. Verifique que ms-catalogo esté ejecutándose en http://localhost:8081");
-        
-        throw new BusinessException("CATALOGO_UNAVAILABLE", 
-            "Servicio de catálogo temporalmente no disponible. Por favor, intente nuevamente en 30 segundos.");
+        log.error("Circuit breaker activado para ms-catalogo");
+        throw new BusinessException("CATALOGO_TIMEOUT", "Catálogo no disponible");
     }
 }

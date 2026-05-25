@@ -4,15 +4,17 @@ package com.example.ms_envios.Service;
 
 import com.example.ms_envios.Model.Envio;
 import com.example.ms_envios.Repository.EnvioRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
 
 @Service
 public class EnvioService {
-    @Autowired
-    private EnvioRepository repository;
+    private final EnvioRepository repository;
+
+    public EnvioService(EnvioRepository repository) {
+        this.repository = repository;
+    }
 
     public Envio guardar(Envio envio) {
         // Generamos un código de seguimiento automático de ejemplo
