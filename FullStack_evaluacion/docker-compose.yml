@@ -1,0 +1,366 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: ecomarket_mysql_db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_HOST: '%'
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./mysql-init/create-databases.sql:/docker-entrypoint-initdb.d/create-databases.sql:ro
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+    networks:
+      - ecomarket-network
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: ecomarket_phpmyadmin
+    environment:
+      PMA_HOST: ecomarket_mysql_db
+      PMA_USER: root
+      PMA_PASSWORD: root
+    ports:
+      - "8080:80"
+    depends_on:
+      - mysql
+    networks:
+      - ecomarket-network
+
+  ms-catalogo:
+    image: eclipse-temurin:17-jre-alpine
+    container_name: ecomarket_ms_catalogo
+    working_dir: /app
+    volumes:
+      - ./ms-catalogo/target/ms-catalogo-1.0.0.jar:/app/app.jar
+    ports:
+      - "8081:8080"
+    environment:
+      SPRING_APPLICATION_NAME: ms-catalogo
+      SPRING_PROFILES_ACTIVE: docker
+      SERVER_PORT: 8080
+      SPRING_DATASOURCE_URL: jdbc:mysql://ecomarket_mysql_db:3306/ms_catalogo?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
+      SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "true"
+      SPRING_FLYWAY_ENABLED: "true"
+      SPRING_FLYWAY_LOCATIONS: classpath:db/migration
+      SPRING_FLYWAY_BASELINE_ON_MIGRATE: "true"
+    command: java -jar app.jar
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - ecomarket-network
+
+  ms-pedidos:
+    image: eclipse-temurin:17-jre-alpine
+    container_name: ecomarket_ms_pedidos
+    working_dir: /app
+    volumes:
+      - ./ms-pedidos/target/ms-pedidos-1.0.0.jar:/app/app.jar
+    ports:
+      - "8082:8080"
+    environment:
+      SPRING_APPLICATION_NAME: ms-pedidos
+      SPRING_PROFILES_ACTIVE: docker
+      SERVER_PORT: 8080
+      SPRING_DATASOURCE_URL: jdbc:mysql://ecomarket_mysql_db:3306/ms_pedidos?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
+      SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "true"
+      SPRING_FLYWAY_ENABLED: "true"
+      SPRING_FLYWAY_LOCATIONS: classpath:db/migration
+      SPRING_FLYWAY_BASELINE_ON_MIGRATE: "true"
+    command: java -jar app.jar
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - ecomarket-network
+
+  ms-carrito:
+    image: eclipse-temurin:17-jre-alpine
+    container_name: ecomarket_ms_carrito
+    working_dir: /app
+    volumes:
+      - ./ms_carrito/target/ms_carrito-1.0.0.jar:/app/app.jar
+    ports:
+      - "8083:8080"
+    environment:
+      SPRING_APPLICATION_NAME: ms-carrito
+      SPRING_PROFILES_ACTIVE: docker
+      SERVER_PORT: 8080
+      SPRING_DATASOURCE_URL: jdbc:mysql://ecomarket_mysql_db:3306/ms_carrito?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
+      SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "true"
+      SPRING_FLYWAY_ENABLED: "true"
+      SPRING_FLYWAY_LOCATIONS: classpath:db/migration
+      SPRING_FLYWAY_BASELINE_ON_MIGRATE: "true"
+    command: java -jar app.jar
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - ecomarket-network
+
+  ms-usuarios:
+    image: eclipse-temurin:17-jre-alpine
+    container_name: ecomarket_ms_usuarios
+    working_dir: /app
+    volumes:
+      - ./ms-usuarios/target/ms-usuarios-1.0.0.jar:/app/app.jar
+    ports:
+      - "8001:8080"
+    environment:
+      SPRING_APPLICATION_NAME: ms-usuarios
+      SPRING_PROFILES_ACTIVE: docker
+      SERVER_PORT: 8080
+      SPRING_DATASOURCE_URL: jdbc:mysql://ecomarket_mysql_db:3306/ms_usuarios?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
+      SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "true"
+      SPRING_FLYWAY_ENABLED: "true"
+      SPRING_FLYWAY_LOCATIONS: classpath:db/migration
+      SPRING_FLYWAY_BASELINE_ON_MIGRATE: "true"
+    command: java -jar app.jar
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - ecomarket-network
+
+  ms-pagos:
+    image: eclipse-temurin:17-jre-alpine
+    container_name: ecomarket_ms_pagos
+    working_dir: /app
+    volumes:
+      - ./ms-pagos/target/ms-pagos-1.0.0.jar:/app/app.jar
+    ports:
+      - "8002:8080"
+    environment:
+      SPRING_APPLICATION_NAME: ms-pagos
+      SPRING_PROFILES_ACTIVE: docker
+      SERVER_PORT: 8080
+      SPRING_DATASOURCE_URL: jdbc:mysql://ecomarket_mysql_db:3306/ms_pagos?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
+      SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "true"
+      SPRING_FLYWAY_ENABLED: "true"
+      SPRING_FLYWAY_LOCATIONS: classpath:db/migration
+      SPRING_FLYWAY_BASELINE_ON_MIGRATE: "true"
+    command: java -jar app.jar
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - ecomarket-network
+
+  ms-envios:
+    image: eclipse-temurin:17-jre-alpine
+    container_name: ecomarket_ms_envios
+    working_dir: /app
+    volumes:
+      - ./ms-envios/target/ms-envios-1.0.0.jar:/app/app.jar
+    ports:
+      - "8005:8080"
+    environment:
+      SPRING_APPLICATION_NAME: ms-envios
+      SPRING_PROFILES_ACTIVE: docker
+      SERVER_PORT: 8080
+      SPRING_DATASOURCE_URL: jdbc:mysql://ecomarket_mysql_db:3306/ms_envios?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
+      SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "true"
+      SPRING_FLYWAY_ENABLED: "true"
+      SPRING_FLYWAY_LOCATIONS: classpath:db/migration
+      SPRING_FLYWAY_BASELINE_ON_MIGRATE: "true"
+    command: java -jar app.jar
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - ecomarket-network
+
+  ms-clientes:
+    image: eclipse-temurin:17-jre-alpine
+    container_name: ecomarket_ms_clientes
+    working_dir: /app
+    volumes:
+      - ./ms-clientes/ms-clientes/target/ms-clientes-1.0.0.jar:/app/app.jar
+    ports:
+      - "8008:8080"
+    environment:
+      SPRING_APPLICATION_NAME: ms-clientes
+      SPRING_PROFILES_ACTIVE: docker
+      SERVER_PORT: 8080
+      SPRING_DATASOURCE_URL: jdbc:mysql://ecomarket_mysql_db:3306/ms_clientes?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
+      SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "true"
+      SPRING_FLYWAY_ENABLED: "true"
+      SPRING_FLYWAY_LOCATIONS: classpath:db/migration
+      SPRING_FLYWAY_BASELINE_ON_MIGRATE: "true"
+    command: java -jar app.jar
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - ecomarket-network
+
+  ms-promociones:
+    image: eclipse-temurin:17-jre-alpine
+    container_name: ecomarket_ms_promociones
+    working_dir: /app
+    volumes:
+      - ./ms-promociones/ms-promociones/target/ms-promociones-1.0.0.jar:/app/app.jar
+    ports:
+      - "8009:8080"
+    environment:
+      SPRING_APPLICATION_NAME: ms-promociones
+      SPRING_PROFILES_ACTIVE: docker
+      SERVER_PORT: 8080
+      SPRING_DATASOURCE_URL: jdbc:mysql://ecomarket_mysql_db:3306/ms_promociones?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
+      SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "true"
+      SPRING_FLYWAY_ENABLED: "true"
+      SPRING_FLYWAY_LOCATIONS: classpath:db/migration
+      SPRING_FLYWAY_BASELINE_ON_MIGRATE: "true"
+    command: java -jar app.jar
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - ecomarket-network
+
+  ms-inventario:
+    image: eclipse-temurin:17-jre-alpine
+    container_name: ecomarket_ms_inventario
+    working_dir: /app
+    volumes:
+      - ./ms-inventario(3)/ms-inventario/ms-inventario/target/ms-inventario-1.0.0.jar:/app/app.jar
+    ports:
+      - "8010:8080"
+    environment:
+      SPRING_APPLICATION_NAME: ms-inventario
+      SPRING_PROFILES_ACTIVE: docker
+      SERVER_PORT: 8080
+      SPRING_DATASOURCE_URL: jdbc:mysql://ecomarket_mysql_db:3306/ms_inventario?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
+      SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: "true"
+      SPRING_FLYWAY_ENABLED: "true"
+      SPRING_FLYWAY_LOCATIONS: classpath:db/migration
+      SPRING_FLYWAY_BASELINE_ON_MIGRATE: "true"
+    command: java -jar app.jar
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - ecomarket-network
+
+  ms-notificaciones:
+    image: eclipse-temurin:17-jre-alpine
+    container_name: ecomarket_ms_notificaciones
+    working_dir: /app
+    volumes:
+      - ./ms_notificaciones/target/ms_notificaciones-1.0.0.jar:/app/app.jar
+    ports:
+      - "8003:8080"
+    environment:
+      SPRING_APPLICATION_NAME: ms_notificaciones
+      SPRING_PROFILES_ACTIVE: docker
+      SERVER_PORT: 8080
+      SPRING_DATASOURCE_URL: jdbc:mysql://ecomarket_mysql_db:3306/ms_notificaciones?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
+      SPRING_FLYWAY_ENABLED: "true"
+      SPRING_FLYWAY_LOCATIONS: classpath:db/migration
+      SPRING_FLYWAY_BASELINE_ON_MIGRATE: "true"
+    command: java -jar app.jar
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - ecomarket-network
+
+volumes:
+  mysql_data:
+    driver: local
+
+networks:
+  ecomarket-network:
+    driver: bridge
