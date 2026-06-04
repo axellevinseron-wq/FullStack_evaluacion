@@ -23,8 +23,8 @@
         <module>ms-pagos</module>
         <module>ms-pedidos</module>
         <module>ms-envios</module>
-        <module>ms-clientes/ms-clientes</module>
-        <module>ms-promociones/ms-promociones</module>
+        <module>ms-clientes</module>
+        <module>ms-promociones</module>
         <module>ms-inventario</module>
         <module>ms_carrito</module>
         <module>ms_notificaciones</module>
