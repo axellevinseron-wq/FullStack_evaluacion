@@ -25,7 +25,7 @@
         <module>ms-envios</module>
         <module>ms-clientes/ms-clientes</module>
         <module>ms-promociones/ms-promociones</module>
-        <module>ms-inventario(3)/ms-inventario/ms-inventario</module>
+        <module>ms-inventario</module>
         <module>ms_carrito</module>
         <module>ms_notificaciones</module>
     </modules>
