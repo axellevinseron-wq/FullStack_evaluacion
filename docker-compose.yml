@@ -235,7 +235,7 @@ services:
     container_name: ecomarket_ms_clientes
     working_dir: /app
     volumes:
-      - ./ms-clientes/ms-clientes/target/ms-clientes-1.0.0.jar:/app/app.jar
+      - ./ms-clientes/target/ms-clientes-1.0.0.jar:/app/app.jar
     ports:
       - "8008:8080"
     environment:
@@ -268,7 +268,7 @@ services:
     container_name: ecomarket_ms_promociones
     working_dir: /app
     volumes:
-      - ./ms-promociones/ms-promociones/target/ms-promociones-1.0.0.jar:/app/app.jar
+      - ./ms-promociones/target/ms-promociones-1.0.0.jar:/app/app.jar
     ports:
       - "8009:8080"
     environment:
@@ -301,7 +301,7 @@ services:
     container_name: ecomarket_ms_inventario
     working_dir: /app
     volumes:
-      - ./ms-inventario(3)/ms-inventario/ms-inventario/target/ms-inventario-1.0.0.jar:/app/app.jar
+      - ./ms-inventario/target/ms-inventario-1.0.0.jar:/app/app.jar
     ports:
       - "8010:8080"
     environment:
