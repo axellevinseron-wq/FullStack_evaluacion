@@ -1,13 +1,15 @@
 package com.example.ms_pedidos.Service;
 
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
 import com.example.ms_pedidos.Enum.EstadoPedido;
 import com.example.ms_pedidos.Exception.BusinessException;
 import com.example.ms_pedidos.Model.Pedido;
 import com.example.ms_pedidos.Repository.PedidoRepository;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 
-import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
@@ -73,12 +75,10 @@ public class PedidoService {
     private void registrarCambioEstado(Long pedidoId, EstadoPedido estadoAnterior, EstadoPedido estadoNuevo) {
         String mensaje = String.format("AUDITORIA - Pedido %d: %s -> %s", pedidoId, estadoAnterior.getDescripcion(), estadoNuevo.getDescripcion());
         
-        if (estadoNuevo == EstadoPedido.PAGADA) {
-            log.info("✓ PEDIDO PAGADO: {}", mensaje);
-        } else if (estadoNuevo == EstadoPedido.CANCELADA) {
-            log.warn("✗ PEDIDO CANCELADO: {}", mensaje);
-        } else {
-            log.info("→ {}", mensaje);
+        switch (estadoNuevo) {
+            case PAGADA -> log.info("PEDIDO PAGADO: {}", mensaje);
+            case CANCELADA -> log.warn("PEDIDO CANCELADO: {}", mensaje);
+            default -> log.info("-> {}", mensaje);
         }
     }
 }
