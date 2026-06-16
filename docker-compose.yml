@@ -111,7 +111,7 @@ services:
     ports:
       - "8083:8080"
     environment:
-      SPRING_APPLICATION_NAME: ms-carrito
+      SPRING_APPLICATION_NAME: ms_carrito
       SPRING_PROFILES_ACTIVE: docker
       SERVER_PORT: 8080
       SPRING_DATASOURCE_URL: jdbc:mysql://ecomarket_mysql_db:3306/ms_carrito?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
