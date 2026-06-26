@@ -367,6 +367,31 @@ services:
     networks:
       - ecomarket-network
 
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: ecomarket_prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    depends_on:
+      - ms-carrito
+    networks:
+      - ecomarket-network
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: ecomarket_grafana
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+    depends_on:
+      - prometheus
+    networks:
+      - ecomarket-network
+
 volumes:
   mysql_data:
     driver: local
