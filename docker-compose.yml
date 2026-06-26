@@ -114,7 +114,7 @@ services:
       SPRING_APPLICATION_NAME: ms-carrito
       SPRING_PROFILES_ACTIVE: docker
       SERVER_PORT: 8080
-      SPRING_DATASOURCE_URL: jdbc:mysql://ecomarket_mysql_db:3306/ms_carrito?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/ms_carrito?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
