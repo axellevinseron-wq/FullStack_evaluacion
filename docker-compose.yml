@@ -124,6 +124,9 @@ services:
       SPRING_FLYWAY_ENABLED: "true"
       SPRING_FLYWAY_LOCATIONS: classpath:db/migration
       SPRING_FLYWAY_BASELINE_ON_MIGRATE: "true"
+      MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: health,info,metrics,prometheus
+      MANAGEMENT_ENDPOINT_HEALTH_SHOW_DETAILS: always
+      MANAGEMENT_PROMETHEUS_METRICS_EXPORT_ENABLED: "true"
     deploy:
       resources:
         limits:
