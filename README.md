@@ -1,6 +1,6 @@
 # 🛒 EcoMarket - Arquitectura de Microservicios
 
-Sistema e-commerce con 10 microservicios independientes, MySQL dedicada por servicio, Docker Compose.
+Sistema e-commerce con 10 microservicios independientes, MySQL dedicada por servicio, Docker Compose..
 
 ## 📋 Stack Técnico
 
