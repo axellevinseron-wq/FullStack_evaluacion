@@ -1,0 +1,44 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: ms-catalogo
+          uri: http://ecomarket-ms-catalogo:8080
+          predicates:
+            - Path=/api/catalogo/**
+        - id: ms-pedidos
+          uri: http://ecomarket-ms-pedidos:8080
+          predicates:
+            - Path=/api/pedidos/**
+        - id: ms-carrito
+          uri: http://ecomarket-ms-carrito:8080
+          predicates:
+            - Path=/api/carrito/**
+        - id: ms-usuarios
+          uri: http://ecomarket-ms-usuarios:8080
+          predicates:
+            - Path=/api/usuarios/**
+        - id: ms-pagos
+          uri: http://ecomarket-ms-pagos:8080
+          predicates:
+            - Path=/api/pagos/**
+        - id: ms-notificaciones
+          uri: http://ecomarket-ms-notificaciones:8080
+          predicates:
+            - Path=/api/notificaciones/**
+        - id: ms-envios
+          uri: http://ecomarket-ms-envios:8080
+          predicates:
+            - Path=/api/envios/**
+        - id: ms-clientes
+          uri: http://ecomarket-ms-clientes:8080
+          predicates:
+            - Path=/api/clientes/**
+        - id: ms-promociones
+          uri: http://ecomarket-ms-promociones:8080
+          predicates:
+            - Path=/api/promociones/**
+        - id: ms-inventario
+          uri: http://ecomarket-ms-inventario:8080
+          predicates:
+            - Path=/api/inventario/**

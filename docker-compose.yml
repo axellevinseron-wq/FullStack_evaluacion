@@ -39,7 +39,7 @@ services:
       args:
         MODULE: ms-catalogo
         JAR_NAME: ms-catalogo-1.0.0
-    container_name: ecomarket_ms_catalogo
+    container_name: ecomarket-ms-catalogo
     ports:
       - "8081:8080"
     environment:
@@ -73,7 +73,7 @@ services:
       args:
         MODULE: ms-pedidos
         JAR_NAME: ms-pedidos-1.0.0
-    container_name: ecomarket_ms_pedidos
+    container_name: ecomarket-ms-pedidos
     ports:
       - "8082:8080"
     environment:
@@ -107,7 +107,7 @@ services:
       args:
         MODULE: ms_carrito
         JAR_NAME: ms_carrito-1.0.0
-    container_name: ecomarket_ms_carrito
+    container_name: ecomarket-ms-carrito
     ports:
       - "8083:8080"
     environment:
@@ -141,7 +141,7 @@ services:
       args:
         MODULE: ms-usuarios
         JAR_NAME: ms-usuarios-1.0.0
-    container_name: ecomarket_ms_usuarios
+    container_name: ecomarket-ms-usuarios
     ports:
       - "8001:8080"
     environment:
@@ -175,7 +175,7 @@ services:
       args:
         MODULE: ms-pagos
         JAR_NAME: ms-pagos-1.0.0
-    container_name: ecomarket_ms_pagos
+    container_name: ecomarket-ms-pagos
     ports:
       - "8002:8080"
     environment:
@@ -209,7 +209,7 @@ services:
       args:
         MODULE: ms-envios
         JAR_NAME: ms-envios-1.0.0
-    container_name: ecomarket_ms_envios
+    container_name: ecomarket-ms-envios
     ports:
       - "8005:8080"
     environment:
@@ -243,7 +243,7 @@ services:
       args:
         MODULE: ms-clientes
         JAR_NAME: ms-clientes-1.0.0
-    container_name: ecomarket_ms_clientes
+    container_name: ecomarket-ms-clientes
     ports:
       - "8008:8080"
     environment:
@@ -277,7 +277,7 @@ services:
       args:
         MODULE: ms-promociones
         JAR_NAME: ms-promociones-1.0.0
-    container_name: ecomarket_ms_promociones
+    container_name: ecomarket-ms-promociones
     ports:
       - "8009:8080"
     environment:
@@ -311,7 +311,7 @@ services:
       args:
         MODULE: ms-inventario
         JAR_NAME: ms-inventario-1.0.0
-    container_name: ecomarket_ms_inventario
+    container_name: ecomarket-ms-inventario
     ports:
       - "8010:8080"
     environment:
@@ -345,7 +345,7 @@ services:
       args:
         MODULE: ms_notificaciones
         JAR_NAME: ms_notificaciones-1.0.0
-    container_name: ecomarket_ms_notificaciones
+    container_name: ecomarket-ms-notificaciones
     ports:
       - "8003:8080"
     environment:
@@ -364,6 +364,34 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
+    networks:
+      - ecomarket-network
+
+  api-gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        MODULE: api-gateway
+        JAR_NAME: api-gateway-1.0.0
+    container_name: ecomarket-api-gateway
+    ports:
+      - "9000:8080"
+    environment:
+      SPRING_APPLICATION_NAME: api-gateway
+      SPRING_PROFILES_ACTIVE: docker
+      SERVER_PORT: 8080
+    depends_on:
+      - ms-catalogo
+      - ms-pedidos
+      - ms-carrito
+      - ms-usuarios
+      - ms-pagos
+      - ms-notificaciones
+      - ms-envios
+      - ms-clientes
+      - ms-promociones
+      - ms-inventario
     networks:
       - ecomarket-network
 

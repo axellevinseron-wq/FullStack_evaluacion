@@ -17,18 +17,68 @@ Sistema e-commerce con 10 microservicios independientes, MySQL dedicada por serv
 
 ## 🏗️ Arquitectura de Microservicios
 
-| MS | Puerto | BD | Responsabilidad |
+| MS | Puerto (host) | BD | Responsabilidad |
 |----|--------|----|----|
+| **api-gateway** | 9000 | - | Punto de entrada unico, enruta hacia los 10 microservicios |
 | **ms-catalogo** | 8081 | ms_catalogo | Productos, categorías |
-| **ms-inventario** | 8084 | ms_inventario | Stock, reservas |
+| **ms-pedidos** | 8082 | ms_pedidos | Órdenes, estados (PENDIENTE/PAGADA/ENVIADO/ENTREGADO/CANCELADA) |
 | **ms-carrito** | 8083 | ms_carrito | Carrito usuario, Feign→catalogo |
-| **ms-pedidos** | 8082 | ms_pedidos | Órdenes, estados (PAGADA/CANCELADA) |
-| **ms-promociones** | 8085 | ms_promociones | Descuentos, vigencia |
-| **ms-pagos** | 8086 | ms_pagos | Transacciones |
-| **ms-usuarios** | 8087 | ms_usuarios | Autenticación |
-| **ms-envios** | 8088 | ms_envios | Tracking |
-| **ms-notificaciones** | 8089 | ms_notificaciones | Email, SMS |
-| **ms-clientes** | 8090 | ms_clientes | Perfiles cliente |
+| **ms-usuarios** | 8001 | ms_usuarios | Autenticación, cuentas |
+| **ms-pagos** | 8002 | ms_pagos | Transacciones |
+| **ms-notificaciones** | 8003 | ms_notificaciones | Email, SMS |
+| **ms-envios** | 8005 | ms_envios | Tracking |
+| **ms-clientes** | 8008 | ms_clientes | Perfiles cliente |
+| **ms-promociones** | 8009 | ms_promociones | Descuentos, vigencia |
+| **ms-inventario** | 8010 | ms_inventario | Stock, reservas |
+
+## 🌐 API Gateway (Spring Cloud Gateway)
+
+Todas las peticiones pueden entrar por un unico punto: **http://localhost:9000**. El Gateway
+enruta cada request al microservicio correspondiente segun el prefijo de la ruta (mismo path que
+usarias directo contra el microservicio, solo cambia el puerto):
+
+| Ruta a traves del Gateway | Redirige a |
+|---|---|
+| `http://localhost:9000/api/catalogo/**` | ms-catalogo (8081) |
+| `http://localhost:9000/api/pedidos/**` | ms-pedidos (8082) |
+| `http://localhost:9000/api/carrito/**` | ms-carrito (8083) |
+| `http://localhost:9000/api/usuarios/**` | ms-usuarios (8001) |
+| `http://localhost:9000/api/pagos/**` | ms-pagos (8002) |
+| `http://localhost:9000/api/notificaciones/**` | ms-notificaciones (8003) |
+| `http://localhost:9000/api/envios/**` | ms-envios (8005) |
+| `http://localhost:9000/api/clientes/**` | ms-clientes (8008) |
+| `http://localhost:9000/api/promociones/**` | ms-promociones (8009) |
+| `http://localhost:9000/api/inventario/**` | ms-inventario (8010) |
+
+El Gateway se levanta como un servicio mas dentro de `docker-compose.yml` (`api-gateway`, perfil
+`docker`) y expone un filtro global (`GatewayLoggingFilter`) que deja traza de metodo, ruta, status
+y tiempo de respuesta de cada solicitud enrutada.
+
+## 📄 Documentación Swagger / OpenAPI
+
+Cada microservicio expone su propia UI de Swagger (interactiva, permite probar los endpoints
+directo desde el navegador):
+
+| MS | Swagger UI | JSON OpenAPI |
+|---|---|---|
+| ms-catalogo | http://localhost:8081/swagger-ui.html | http://localhost:8081/v3/api-docs |
+| ms-pedidos | http://localhost:8082/swagger-ui.html | http://localhost:8082/v3/api-docs |
+| ms-carrito | http://localhost:8083/swagger-ui.html | http://localhost:8083/v3/api-docs |
+| ms-usuarios | http://localhost:8001/swagger-ui.html | http://localhost:8001/v3/api-docs |
+| ms-pagos | http://localhost:8002/swagger-ui.html | http://localhost:8002/v3/api-docs |
+| ms-notificaciones | http://localhost:8003/swagger-ui.html | http://localhost:8003/v3/api-docs |
+| ms-envios | http://localhost:8005/swagger-ui.html | http://localhost:8005/v3/api-docs |
+| ms-clientes | http://localhost:8008/swagger-ui.html | http://localhost:8008/v3/api-docs |
+| ms-promociones | http://localhost:8009/swagger-ui.html | http://localhost:8009/v3/api-docs |
+| ms-inventario | http://localhost:8010/swagger-ui.html | http://localhost:8010/v3/api-docs |
+
+## ⚙️ Configuración con YAML
+
+Todos los microservicios usan `application.yml` (no `.properties`) organizados en 3 perfiles:
+
+- **default** (sin perfil activo): pensado para correr el servicio desde el IDE, apunta a `localhost:3306`.
+- **docker**: activado por `SPRING_PROFILES_ACTIVE=docker` en `docker-compose.yml`, apunta al contenedor `ecomarket_mysql_db` (o a los contenedores de cada MS en el caso del Gateway) y fuerza `server.port=8080`.
+- **prod**: pensado para despliegue remoto (Railway/Render); las credenciales y URLs se inyectan por variables de entorno (`SPRING_DATASOURCE_URL`, `PORT`, etc.) en vez de quedar hardcodeadas.
 
 ## 📦 Requisitos Previos
 

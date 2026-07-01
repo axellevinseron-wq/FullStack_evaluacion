@@ -28,6 +28,7 @@
         <module>ms-inventario</module>
         <module>ms_carrito</module>
         <module>ms_notificaciones</module>
+        <module>api-gateway</module>
     </modules>
 
     <properties>
@@ -36,6 +37,7 @@
         <mysql-connector.version>8.3.0</mysql-connector.version>
         <flyway.version>9.22.3</flyway.version>
         <lombok.version>1.18.46</lombok.version>
+        <springdoc.version>2.5.0</springdoc.version>
     </properties>
 
     <dependencyManagement>
@@ -93,6 +95,13 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId>
+        </dependency>
+
+        <!-- Swagger / OpenAPI -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>${springdoc.version}</version>
         </dependency>
 
         <!-- DevTools -->

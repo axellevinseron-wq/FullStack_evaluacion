@@ -67,10 +67,10 @@ http://localhost:8083/api/carrito
 
 ## 3️⃣ DOCUMENTACIÓN DE API (Swagger)
 
-❌ **Estado:** No configurado
-- **Descripción:** No hay dependencias de Swagger/SpringFox instaladas en el proyecto
-- **Alternativa:** Los endpoints están documentados en este archivo y en el código fuente
-- **Recomendación para futuro:** Agregar `springdoc-openapi-starter-webmvc-ui` al pom.xml para auto-documentación
+✅ **Estado:** Configurado en los 10 microservicios (springdoc-openapi)
+- **UI interactiva:** `http://localhost:<puerto>/swagger-ui.html` (ej: http://localhost:8081/swagger-ui.html para ms-catalogo)
+- **JSON OpenAPI:** `http://localhost:<puerto>/v3/api-docs`
+- **API Gateway:** `http://localhost:9000` centraliza el acceso a los 10 microservicios (ver README.md)
 
 ---
 
