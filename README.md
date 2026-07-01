@@ -181,6 +181,65 @@ ERROR - Excepción de negocio - Código: TRANSICION_INVALIDA, Mensaje: Transici�
 
 ## 🔍 Monitoreo y Logs
 
+### Observabilidad con Prometheus, Grafana, Loki y Promtail
+
+Levantar el stack minimo de monitoreo:
+
+```bash
+docker compose up -d --build mysql ms-carrito prometheus loki promtail grafana
+```
+
+Servicios:
+
+| Servicio | URL local | Uso |
+|----------|-----------|-----|
+| Prometheus | http://localhost:9090 | Metricas |
+| Grafana | http://localhost:3000 | Dashboards |
+| Loki | http://localhost:3100 | API de logs |
+| ms-carrito metrics | http://localhost:8083/actuator/prometheus | Endpoint Prometheus |
+
+Credenciales Grafana:
+
+```text
+usuario: admin
+password: admin
+```
+
+Grafana queda provisionado automaticamente con estos datasources:
+
+```text
+Prometheus: http://prometheus:9090
+Loki:       http://loki:3100
+```
+
+Dashboard incluido:
+
+```text
+EcoMarket / EcoMarket Observability
+```
+
+Consultas utiles:
+
+```promql
+up{job="ms-carrito"}
+sum(rate(http_server_requests_seconds_count{job="ms-carrito"}[1m]))
+```
+
+```logql
+{service="ms-carrito"}
+{service="ms-carrito"} |= "ERROR"
+```
+
+Verificar desde consola:
+
+```bash
+curl http://localhost:9090/-/ready
+curl http://localhost:3100/ready
+curl "http://localhost:3100/loki/api/v1/query_range?query=%7Bservice%3D%22ms-carrito%22%7D&limit=5"
+```
+
+Nota: no uses `localhost` dentro de los datasources de Grafana cuando Grafana corre en Docker. Dentro de Docker Compose los contenedores se comunican por nombre de servicio: `prometheus`, `loki`, `ms-carrito`.
+
 ### Ver logs en tiempo real
 ```bash
 # Catalogo
